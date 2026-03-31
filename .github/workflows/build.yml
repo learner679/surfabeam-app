@@ -28,7 +28,7 @@ jobs:
         run: npx cap sync android
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -45,3 +45,11 @@ jobs:
         with:
           name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+        # --- 必须加上下面这一步 ---
+      - name: Change wrapper permissions
+        run: chmod +x android/gradlew
+
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleDebug
